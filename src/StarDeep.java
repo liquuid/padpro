@@ -1,6 +1,6 @@
 import java.awt.Color;
 
-public class StarDeep implements InterfaceStar {
+public class StarDeep implements Star {
 	private double velocidade;
 	private double x;
 	private double y;

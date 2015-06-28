@@ -130,7 +130,7 @@ public class Main {
 				
 		// Lista com todas as estrelinhas
 		
-		List<InterfaceStar> background = new ArrayList<InterfaceStar>();
+		List<Star> background = new ArrayList<Star>();
 		for(int i = 0; i != 50; i++){
 			background.add(new StarDeep(0.045, Color.DARK_GRAY));
 		}
@@ -539,7 +539,7 @@ public class Main {
 			
 			/* desenhando plano fundo  */
 			
-			for(InterfaceStar estrela : background){
+			for(Star estrela : background){
 				estrela.move(delta);
 				estrela.draw();
 			}

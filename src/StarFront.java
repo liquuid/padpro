@@ -1,7 +1,7 @@
 import java.awt.Color;
 
 
-public class StarFront implements InterfaceStar {
+public class StarFront implements Star {
 	private double velocidade;
 	private double x;
 	private double y;
