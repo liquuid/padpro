@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 	
@@ -124,39 +126,25 @@ public class Main {
 		double [] e_projectile_VY = new double[200];			// velocidade no eixo y
 		double e_projectile_radius = 2.0;						// raio (tamanho dos projéteis inimigos)
 		
-		/* estrelas que formam o fundo de primeiro plano */
+		/* estrelas que formam o fundo */
+				
+		// Lista com todas as estrelinhas
 		
-		double [] background1_X = new double[20];
-		double [] background1_Y = new double[20];
-		double background1_speed = 0.070;
-		double background1_count = 0.0;
-		
-		/* estrelas que formam o fundo de segundo plano */
-		
-		double [] background2_X = new double[50];
-		double [] background2_Y = new double[50];
-		double background2_speed = 0.045;
-		double background2_count = 0.0;
-		
+		List<InterfaceStar> background = new ArrayList<InterfaceStar>();
+		for(int i = 0; i != 50; i++){
+			background.add(new StarDeep(0.045, Color.DARK_GRAY));
+		}
+		for(int i = 0; i != 20; i++){
+			background.add(new StarFront(0.070, Color.GRAY));
+		}
+				
 		/* inicializações */
 		
 		for(int i = 0; i < projectile_states.length; i++) projectile_states[i] = INACTIVE;
 		for(int i = 0; i < e_projectile_states.length; i++) e_projectile_states[i] = INACTIVE;
 		for(int i = 0; i < enemy1_states.length; i++) enemy1_states[i] = INACTIVE;
 		for(int i = 0; i < enemy2_states.length; i++) enemy2_states[i] = INACTIVE;
-		
-		for(int i = 0; i < background1_X.length; i++){
-			
-			background1_X[i] = Math.random() * GameLib.WIDTH;
-			background1_Y[i] = Math.random() * GameLib.HEIGHT;
-		}
-		
-		for(int i = 0; i < background2_X.length; i++){
-			
-			background2_X[i] = Math.random() * GameLib.WIDTH;
-			background2_Y[i] = Math.random() * GameLib.HEIGHT;
-		}
-						
+								
 		/* iniciado interface gráfica */
 		
 		GameLib.initGraphics();
@@ -549,25 +537,13 @@ public class Main {
 			/* Desenho da cena */
 			/*******************/
 			
-			/* desenhando plano fundo distante */
+			/* desenhando plano fundo  */
 			
-			GameLib.setColor(Color.DARK_GRAY);
-			background2_count += background2_speed * delta;
-			
-			for(int i = 0; i < background2_X.length; i++){
-				
-				GameLib.fillRect(background2_X[i], (background2_Y[i] + background2_count) % GameLib.HEIGHT, 2, 2);
+			for(InterfaceStar estrela : background){
+				estrela.move(delta);
+				estrela.draw();
 			}
 			
-			/* desenhando plano de fundo próximo */
-			
-			GameLib.setColor(Color.GRAY);
-			background1_count += background1_speed * delta;
-			
-			for(int i = 0; i < background1_X.length; i++){
-				
-				GameLib.fillRect(background1_X[i], (background1_Y[i] + background1_count) % GameLib.HEIGHT, 3, 3);
-			}
 						
 			/* desenhando player */
 			
