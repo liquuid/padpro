@@ -1,7 +1,7 @@
 
 public interface Enemy {
 	public void draw();
-	public void move(long delta);
+	public void move(long delta, Player p);
 	public double posX();
 	public double posY();
 	public void setPosX(double x);

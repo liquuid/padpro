@@ -42,7 +42,7 @@ public class EnemyTipo2 implements Enemy {
 	}
 
 	@Override
-	public void move(long delta) {
+	public void move(long delta, Player p) {
 		long currentTime = System.currentTimeMillis();
 		if (this.state == EXPLODING) {
 			if (currentTime > this.explosion_end) {
