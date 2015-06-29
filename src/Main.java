@@ -280,7 +280,7 @@ public class Main {
 			
 			if (currentTime > nextEnemy1) {
 				nextEnemy1 = currentTime + 500;
-				enemies.add(new EnemyTipo1(ACTIVE, (currentTime + 500)));
+				enemies.add(new EnemyTipo1(ACTIVE, (currentTime + 500), tiro));
 
 			}
 			System.out.println(enemies.size());
@@ -348,7 +348,7 @@ public class Main {
 			
 			/* desenhando projeteis (inimigos) */
 		
-			//tiro.draw(delta);
+			tiro.draw(delta);
 			
 			/* desenhando inimigos (tipo 1) */
 			

@@ -15,11 +15,7 @@ public class ShootTipo1 {
 	public ShootTipo1(){
 		for(int i = 0; i < e_projectile_states.length; i++) e_projectile_states[i] = INACTIVE;
 	}
-	
-	/* Encontra e devolve o primeiro índice do  */
-	/* array referente a uma posição "inativa". */
-	
-	public static int findFreeIndex(int [] stateArray){
+public static int findFreeIndex(int [] stateArray){
 		
 		int i;
 		
@@ -51,32 +47,6 @@ public class ShootTipo1 {
 		
 		return freeArray;
 	}
-	
-	public void atira(Enemy enemy, long delta){
-		long currentTime = System.currentTimeMillis();
-		draw(delta);
-		int free = findFreeIndex(e_projectile_states);
-		if(free < e_projectile_states.length){
-			e_projectile_X[free] = enemy.posX();
-			e_projectile_Y[free] = enemy.posY();
-			e_projectile_VX[free] = Math.cos(enemy.getAngle()) * 0.45;
-			e_projectile_VY[free] = Math.sin(enemy.getAngle()) * 0.45 * (-1.0);
-			e_projectile_states[free] = 1;
-			enemy.setNextShoot((long) (currentTime + 200 + Math.random() * 500));
-		}
-	}
-	public void draw(long delta){
-		for(int i = 0; i < e_projectile_states.length; i++){
-			
-			if(e_projectile_states[i] == ACTIVE){
-
-				GameLib.setColor(Color.RED);
-				GameLib.drawCircle(e_projectile_X[i], e_projectile_Y[i], e_projectile_radius);
-				move(delta);
-			}
-		}
-	}
-	
 	public void move(long delta){
 		for(int i = 0; i < e_projectile_states.length; i++){
 			
@@ -88,9 +58,33 @@ public class ShootTipo1 {
 					e_projectile_states[i] = INACTIVE;
 				}
 				else {
+				
 					e_projectile_X[i] += e_projectile_VX[i] * delta;
 					e_projectile_Y[i] += e_projectile_VY[i] * delta;
 				}
+			}
+		}
+	}
+	
+	public void atira(long delta, double x, double y, double angle){
+		int free = findFreeIndex(e_projectile_states);
+		
+		if(free < e_projectile_states.length){
+			e_projectile_X[free] = x;
+			e_projectile_Y[free] = y;
+			e_projectile_VX[free] = Math.cos(angle) * 0.45;
+			e_projectile_VY[free] = Math.sin(angle) * 0.45 * (-1.0);
+			e_projectile_states[free] = 1;
+		}
+	}
+		
+	public void draw(long delta){
+		for(int i = 0; i < e_projectile_states.length; i++){
+			
+			if(e_projectile_states[i] == ACTIVE){
+
+				GameLib.setColor(Color.RED);
+				GameLib.drawCircle(e_projectile_X[i], e_projectile_Y[i], e_projectile_radius);
 			}
 		}
 	}
