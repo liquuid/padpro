@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 
-public class ShootTipo3 implements Shoot2 {
+public class ShootTipo3 implements Shoot {
 	public static final int INACTIVE = 0;
 	public static final int ACTIVE = 1;
 	public static final int TAMANHO = 200;
@@ -23,7 +23,7 @@ public class ShootTipo3 implements Shoot2 {
 			e_projectile_VY.add(i, 0.0);
 		}
 	}
-
+	
 	public void move(long delta){
 		
 		for(int i = 0; i < e_projectile_states.size(); i++){
@@ -43,7 +43,9 @@ public class ShootTipo3 implements Shoot2 {
 		}
 	}
 	
-	
+	public void atira(long delta, double x, double y, double vx, double vy, double angle){
+		
+	}
 	public void atira(long delta, double x, double y, double[] angles){
 		int[] freeArray = new int[angles.length];
 		for(int i = 0; i < angles.length; i++){
@@ -78,5 +80,21 @@ public class ShootTipo3 implements Shoot2 {
 				GameLib.drawCircle(e_projectile_X.get(i), e_projectile_Y.get(i), e_projectile_radius);
 			}
 		}
+	}
+	
+	public int getSize(){
+		return TAMANHO;
+	}
+	
+	public double getPosX(int i){
+		return e_projectile_X.get(i);
+	}
+	
+	public double getPosY(int i){
+		return e_projectile_Y.get(i);
+	}
+	
+	public double getRadius(){
+		return e_projectile_radius;
 	}
 }

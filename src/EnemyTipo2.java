@@ -15,9 +15,9 @@ public class EnemyTipo2 implements Enemy {
 	private double explosion_end; // instantes dos finais da explosões
 	private long nextShoot; // instantes do próximo tiro
 	private double radius = 12.0; // raio (tamanho do inimigo 1)
-	private Shoot2 tiro;
+	private Shoot tiro;
 
-	public EnemyTipo2(int state, long nextShoot, double enemy2_spawnX, Shoot2 tiro) {
+	public EnemyTipo2(int state, long nextShoot, double enemy2_spawnX, Shoot tiro) {
 		this.state = state;
 		this.nextShoot = nextShoot;
 		this.x = enemy2_spawnX;

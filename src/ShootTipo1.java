@@ -64,4 +64,23 @@ public class ShootTipo1 implements Shoot{
 			}
 		}
 	}
+	public void atira(long delta, double x, double y, double[] angles){
+		
+	}
+	
+	public int getSize(){
+		return TAMANHO;
+	}
+	
+	public double getPosX(int i){
+		return e_projectile_X.get(i);
+	}
+	
+	public double getPosY(int i){
+		return e_projectile_Y.get(i);
+	}
+	
+	public double getRadius(){
+		return e_projectile_radius;
+	}
 }

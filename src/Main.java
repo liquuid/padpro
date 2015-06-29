@@ -65,6 +65,21 @@ public class Main {
 		return freeArray;
 	}
 	
+	public static void colisao(Shoot tiro, long currentTime, Player p1){
+		for(int i = 0; i < tiro.getSize(); i++){
+			
+			double dx = tiro.getPosX(i) - p1.getPlayer_X();
+			double dy = tiro.getPosY(i) - p1.getPlayer_Y();
+			double dist = Math.sqrt(dx * dx + dy * dy);
+			
+			if(dist < (p1.getPlayer_radius() + tiro.getRadius()) * 0.8){
+				
+				p1.setPlayer_state(EXPLODING);
+				p1.setPlayer_explosion_start(currentTime);
+				p1.setPlayer_explosion_end(currentTime + 2000);
+			}
+		}
+	}
 	/* Método principal */
 	
 	public static void main(String [] args){
@@ -79,7 +94,7 @@ public class Main {
 		
 		Shoot tiro1 = new ShootTipo1();
 		Shoot tiro2 = new ShootTipo2();
-		Shoot2 tiro3 = new ShootTipo3();
+		Shoot tiro3 = new ShootTipo3();
 		
 		/* variáveis do player 
 		
@@ -94,7 +109,7 @@ public class Main {
 		long player_nextShot = currentTime;						// instante a partir do qual pode haver um próximo tiro
 		*/
 		Player p1 = new Player(currentTime, tiro2);
-		/* variáveis dos projéteis disparados pelo player */
+		/* variáveis dos projéteis disparados pelo player 
 		
 		int [] projectile_states = new int[10];					// estados
 		double [] projectile_X = new double[10];				// coordenadas x
@@ -186,21 +201,10 @@ public class Main {
 						
 			if(p1.getPlayer_state() == ACTIVE){
 				
-				/* colisões player - projeteis (inimigo)
+				/* colisões player - projeteis (inimigo) */
 				
-				for(int i = 0; i < e_projectile_states.length; i++){
-					
-					double dx = e_projectile_X[i] - player_X;
-					double dy = e_projectile_Y[i] - player_Y;
-					double dist = Math.sqrt(dx * dx + dy * dy);
-					
-					if(dist < (player_radius + e_projectile_radius) * 0.8){
-						
-						player_state = EXPLODING;
-						player_explosion_start = currentTime;
-						player_explosion_end = currentTime + 2000;
-					}
-				}
+				colisao(tiro1, currentTime, p1);
+				colisao(tiro3, currentTime, p1);
 				
 			    /* colisão do player com os inimigos */	
 				
@@ -219,14 +223,14 @@ public class Main {
 			
 			/* colisões projeteis (player) - inimigos */
 			
-			for(int k = 0; k < projectile_states.length; k++){
+			for(int k = 0; k < tiro2.getSize(); k++){
 				
 				for(Enemy enemy : enemies){
 										
 					if(enemy.state() == ACTIVE){
 					
-						double dx = enemy.posX() - projectile_X[k];
-						double dy = enemy.posY() - projectile_Y[k];
+						double dx = enemy.posX() - tiro2.getPosX(k);
+						double dy = enemy.posY() - tiro2.getPosY(k);
 						double dist = Math.sqrt(dx * dx + dy * dy);
 						
 						if(dist < enemy.radius()){
