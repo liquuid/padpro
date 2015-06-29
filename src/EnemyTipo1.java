@@ -17,9 +17,9 @@ public class EnemyTipo1 implements Enemy {
 	private double explosion_end;		// instantes dos finais da explosões
 	private long nextShoot;				// instantes do próximo tiro
 	private double radius = 9.0;		    // raio (tamanho do inimigo 1)
-	private ShootTipo1 tiro;
+	private Shoot tiro;
 
-	public EnemyTipo1(int state, long nextShoot, ShootTipo1 tiro) {
+	public EnemyTipo1(int state, long nextShoot, Shoot tiro) {
 		this.state = state;
 		this.nextShoot = nextShoot;
 		this.x = Math.random() * (GameLib.WIDTH - 20.0) + 10.0;
@@ -160,7 +160,7 @@ public class EnemyTipo1 implements Enemy {
 				this.angle += this.rv * delta;
 				
 				if(currentTime > this.nextShoot && this.y < p.getPlayer_Y()){																	
-					tiro.atira(delta, this.x, this.y, this.angle);
+					tiro.atira(delta, this.x, this.y, (Math.cos(angle) * 0.45), (Math.sin(angle) * 0.45 * (-1.0)), this.angle);
 					this.nextShoot = (long) (currentTime + 200 + Math.random() * 500);
 				}
 			}

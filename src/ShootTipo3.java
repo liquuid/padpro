@@ -1,7 +1,8 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class ShootTipo1 implements Shoot{
+
+public class ShootTipo3 implements Shoot2 {
 	public static final int INACTIVE = 0;
 	public static final int ACTIVE = 1;
 	public static final int TAMANHO = 200;
@@ -13,7 +14,7 @@ public class ShootTipo1 implements Shoot{
 	ArrayList<Double> e_projectile_VY = new ArrayList<Double>(); // velocidade no eixo y		
 	private double e_projectile_radius = 2.0;						// raio (tamanho dos projéteis inimigos)
 	
-	public ShootTipo1(){
+	public ShootTipo3(){
 		for(int i = 0; i < TAMANHO;i++){
 			e_projectile_states.add(i, INACTIVE);
 			e_projectile_X.add(i, 0.0);
@@ -42,18 +43,32 @@ public class ShootTipo1 implements Shoot{
 		}
 	}
 	
-	public void atira(long delta, double x, double y, double vx, double vy, double angle){
-		int free = e_projectile_states.indexOf(INACTIVE);
-		
-		if(free < e_projectile_states.size()){
-			e_projectile_X.add(free, x);
-			e_projectile_Y.add(free, y);
-			e_projectile_VX.add(free, vx);
-			e_projectile_VY.add(free, vy);
-			e_projectile_states.add(free, ACTIVE);
+	
+	public void atira(long delta, double x, double y, double[] angles){
+		int[] freeArray = new int[angles.length];
+		for(int i = 0; i < angles.length; i++){
+			freeArray[i] = e_projectile_states.indexOf(INACTIVE);
+		}
+
+		for(int k = 0; k < freeArray.length; k++){
+			
+			int free = freeArray[k];
+			
+			if(free < e_projectile_states.size()){
+				
+				double a = angles[k] + Math.random() * Math.PI/6 - Math.PI/12;
+				double vex = Math.cos(a);
+				double vey = Math.sin(a);
+				
+				e_projectile_X.add(free, x);
+				e_projectile_Y.add(free, y);
+				e_projectile_VX.add(free, (vex*0.30));
+				e_projectile_VY.add(free, (vey*0.30));
+				e_projectile_states.add(free, ACTIVE);
+			}
 		}
 	}
-		
+	
 	public void draw(){
 		for(int i = 0; i < e_projectile_states.size(); i++){
 			

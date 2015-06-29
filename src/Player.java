@@ -15,9 +15,11 @@ public class Player {
 	private double player_explosion_start = 0;						// instante do início da explosão
 	private double player_explosion_end = 0;						// instante do final da explosão
 	private long player_nextShot;						// instante a partir do qual pode haver um próximo tiro
+	private Shoot tiro;
 	
-	public Player(long time){
+	public Player(long time, Shoot tiro){
 		this.player_nextShot = time;
+		this.tiro = tiro;
 	}
 	
 	public void draw(){
@@ -37,27 +39,15 @@ public class Player {
 	public boolean tecla(long delta){
 		long currentTime = System.currentTimeMillis();
 		if(player_state == ACTIVE){
-			
 			if(GameLib.iskeyPressed(GameLib.KEY_UP)) player_Y -= delta * player_VY;
 			if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player_Y += delta * player_VY;
 			if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player_X -= delta * player_VX;
 			if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player_X += delta * player_VY;
 			if(GameLib.iskeyPressed(GameLib.KEY_CONTROL)) {
-			/*	
 				if(currentTime > player_nextShot){
-					
-					int free = findFreeIndex(projectile_states);
-											
-					if(free < projectile_states.length){
-						
-						projectile_X[free] = player_X;
-						projectile_Y[free] = player_Y - 2 * player_radius;
-						projectile_VX[free] = 0.0;
-						projectile_VY[free] = -1.0;
-						projectile_states[free] = 1;
-						player_nextShot = currentTime + 100;
-					}
-				}*/	
+					tiro.atira(delta, player_X, (player_Y - 2 * player_radius), 0.0, -1.0, player_radius);
+					player_nextShot = currentTime + 100;
+				}
 			}
 		}
 		

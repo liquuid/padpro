@@ -15,8 +15,9 @@ public class EnemyTipo2 implements Enemy {
 	private double explosion_end; // instantes dos finais da explosões
 	private long nextShoot; // instantes do próximo tiro
 	private double radius = 12.0; // raio (tamanho do inimigo 1)
+	private Shoot2 tiro;
 
-	public EnemyTipo2(int state, long nextShoot, double enemy2_spawnX) {
+	public EnemyTipo2(int state, long nextShoot, double enemy2_spawnX, Shoot2 tiro) {
 		this.state = state;
 		this.nextShoot = nextShoot;
 		this.x = enemy2_spawnX;
@@ -24,6 +25,7 @@ public class EnemyTipo2 implements Enemy {
 		this.v = 0.42;
 		this.angle = (3 * Math.PI) / 2;
 		this.rv = 0.0;
+		this.tiro = tiro;
 	}
 
 	@Override
@@ -90,28 +92,8 @@ public class EnemyTipo2 implements Enemy {
 				if (shootNow) {
 					// SHOOT NOW !!!
 
-					/*	double [] angles = { Math.PI/2 + Math.PI/8, Math.PI/2, Math.PI/2 - Math.PI/8 };
-						int [] freeArray = findFreeIndex(e_projectile_states, angles.length);
-
-						for(int k = 0; k < freeArray.length; k++){
-							
-							int free = freeArray[k];
-							
-							if(free < e_projectile_states.length){
-								
-								double a = angles[k] + Math.random() * Math.PI/6 - Math.PI/12;
-								double vx = Math.cos(a);
-								double vy = Math.sin(a);
-									
-								e_projectile_X[free] = enemy2_X[i];
-								e_projectile_Y[free] = enemy2_Y[i];
-								e_projectile_VX[free] = vx * 0.30;
-								e_projectile_VY[free] = vy * 0.30;
-								e_projectile_states[free] = 1;
-							}
-						}
-					}*/
-					
+					double [] angles = { Math.PI/2 + Math.PI/8, Math.PI/2, Math.PI/2 - Math.PI/8 };	
+					tiro.atira(delta, this.x, this.y, angles);
 				}
 			}
 		}
