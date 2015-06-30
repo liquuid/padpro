@@ -107,58 +107,6 @@ public class Main {
 			/* Verificação de colisões */
 			/***************************/
 						
-			/*if(player.getState() == ACTIVE){
-				
-				/* colisões player - projeteis (inimigo) */
-				
-				/*for(Shoot shoot : shoots){
-					
-					double dx = shoot.getX() - player.getX();
-					double dy = shoot.getY() - player.getY();
-					double dist = Math.sqrt(dx * dx + dy * dy);
-					
-					if(dist < (player.getRadius() + shoot.getRadius()) * 0.8){
-						player.setState(EXPLODING);
-						player.setExplosion_start(currentTime);
-						player.setExplosion_end(currentTime + 2000);
-					}
-				}*/
-				
-			    /* colisão do player com os inimigos 
-				
-				for (Enemy enemy : enemies){
-					double dx = enemy.posX() - player.getX();
-					double dy = enemy.posY() - player.getY();
-					double dist = Math.sqrt(dx * dx + dy * dy);
-									
-					if(dist < (player.getRadius() + enemy.radius()) * 0.8){
-						player.setState(EXPLODING);
-						player.setExplosion_start(currentTime);
-						player.setExplosion_end(currentTime + 2000);
-					}
-				}
-			}*/
-			
-			/* colisões projeteis (player) - inimigos */
-			
-			/*for(Shoot shoot : shoots){
-				for(Enemy enemy : enemies){
-										
-					if(enemy.state() == ACTIVE){
-					
-						double dx = enemy.posX() - shoot.getX();
-						double dy = enemy.posY() - shoot.getY();
-						double dist = Math.sqrt(dx * dx + dy * dy);
-						
-						if(dist < enemy.radius()){
-							
-							enemy.setState(EXPLODING);
-							enemy.setExplosionStart(currentTime);
-							enemy.setExplosionEnd(currentTime + 500);
-						}
-					}
-				}
-			}*/
 			for (Enemy enemy : enemies){
 				enemy.colisionDetection(player);
 			}
@@ -168,7 +116,6 @@ public class Main {
 			}
 			
 			
-				
 			/***************************/
 			/* Atualizações de estados */
 			/***************************/
