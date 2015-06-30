@@ -37,13 +37,13 @@ public class Player {
 			GameLib.drawPlayer(this.x, this.y, this.radius);
 		}
 	}
-	public void shoot(List<Shoot> listShoots){
+	public void shot(List<Shot> listShoots){
 		long currentTime = System.currentTimeMillis();
 		
 		if(currentTime > this.nextShot){
 			this.nextShot = (long) (currentTime + 200 + Math.random() * 500);
-			Shoot shoot = new ShootPlayer(this);
-			listShoots.add(shoot);
+			Shot shot = new ShotPlayer(this);
+			listShoots.add(shot);
 		}		
 	}
 	

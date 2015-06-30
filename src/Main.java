@@ -22,7 +22,7 @@ public class Main {
 	
 	/* Lista com todos projeteis */
 	
-	private static List<Shoot> shoots = new ArrayList<Shoot>();
+	private static List<Shot> shots = new ArrayList<Shot>();
 	
 	
 	/* Espera, sem fazer nada, até que o instante de tempo atual seja */
@@ -110,9 +110,9 @@ public class Main {
 			for (Enemy enemy : enemies){
 				enemy.colisionDetection(player);
 			}
-			for(Shoot shoot : shoots){
-				shoot.colisionDetection(player);
-				shoot.colisionDetection(enemies);
+			for(Shot shot : shots){
+				shot.colisionDetection(player);
+				shot.colisionDetection(enemies);
 			}
 			
 			
@@ -122,14 +122,14 @@ public class Main {
 			
 			/* projeteis */
 			
-			for(Shoot shoot : shoots){		
-				if(shoot.getState() == ACTIVE){
+			for(Shot shot : shots){		
+				if(shot.getState() == ACTIVE){
 					/* verificando se projétil saiu da tela */
-					if(shoot.getY() > GameLib.HEIGHT || shoot.getY() < 0 ) {
-						shoot.setState(INACTIVE);
+					if(shot.getY() > GameLib.HEIGHT || shot.getY() < 0 ) {
+						shot.setState(INACTIVE);
 					}
 					else {
-						shoot.move(delta);
+						shot.move(delta);
 					}
 				}
 			}
@@ -145,8 +145,8 @@ public class Main {
 					}
 				}
 				enemy.move(delta);
-				enemy.shoot(shoots,player);
-				enemy.setNextShoot((long) (currentTime + 200 + Math.random() * 500));
+				enemy.shot(shots,player);
+				enemy.setNextShot((long) (currentTime + 200 + Math.random() * 500));
 				
 			}
 			
@@ -156,7 +156,7 @@ public class Main {
 				nextEnemy1 = currentTime + 500;
 				enemies.add(new EnemyTipo1(ACTIVE, (currentTime + 500)));
 			}
-			System.out.println(shoots.size());
+			System.out.println(shots.size());
 			
 			/* verificando se novos inimigos (tipo 2) devem ser "lançados" */
 			
@@ -195,7 +195,7 @@ public class Main {
 				if(GameLib.iskeyPressed(GameLib.KEY_CONTROL)) {
 					
 					if(currentTime > player.getNextShot()){										
-							player.shoot(shoots);
+							player.shot(shots);
 							player.setNextShot(currentTime + 100);
 					}	
 				}
@@ -228,8 +228,8 @@ public class Main {
 			
 			/* desenhando projeteis */
 			
-			for (Shoot shoot : shoots){
-				shoot.draw();
+			for (Shot shot : shots){
+				shot.draw();
 			}
 			
 			/* desenhando inimigos */
@@ -247,9 +247,9 @@ public class Main {
 				}
 			}
 			
-			for(Shoot shoot : shoots){
-				if (shoot.getState() == INACTIVE ){
-					shoots.remove(shoot);
+			for(Shot shot : shots){
+				if (shot.getState() == INACTIVE ){
+					shots.remove(shot);
 					break;
 				}
 			}

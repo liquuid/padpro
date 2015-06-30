@@ -21,8 +21,8 @@ public interface Enemy {
 	public void setRV(double rv);
 	public double getAngle();
 	public void setAngle(double angle);
-	public double getNextShoot();
-	public void setNextShoot(long time);
-	public void shoot(List<Shoot> listShoots, Player player);
+	public double getNextShot();
+	public void setNextShot(long time);
+	public void shot(List<Shot> listShots, Player player);
 	public void colisionDetection(Player player);
 }

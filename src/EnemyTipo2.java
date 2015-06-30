@@ -14,13 +14,13 @@ public class EnemyTipo2 implements Enemy {
 	private double rv; // velocidades de rotação
 	private double explosion_start; // instantes dos inícios das explosões
 	private double explosion_end; // instantes dos finais da explosões
-	private long nextShoot; // instantes do próximo tiro
+	private long nextShot; // instantes do próximo tiro
 	private double radius = 12.0; // raio (tamanho do inimigo 1)
 	private boolean shootNow = false;
 
-	public EnemyTipo2(int state, long nextShoot, double enemy2_spawnX) {
+	public EnemyTipo2(int state, long nextShot, double enemy2_spawnX) {
 		this.state = state;
-		this.nextShoot = nextShoot;
+		this.nextShot = nextShot;
 		this.x = enemy2_spawnX;
 		this.y = -10.0;
 		this.v = 0.42;
@@ -185,31 +185,31 @@ public class EnemyTipo2 implements Enemy {
 	}
 
 	@Override
-	public double getNextShoot() {
-		return this.nextShoot;
+	public double getNextShot() {
+		return this.nextShot;
 	}
 
 	@Override
-	public void setNextShoot(long time) {
-		if ( this.nextShoot == 0 ){
-			System.out.println(this.nextShoot);
-			this.nextShoot = time;
+	public void setNextShot(long time) {
+		if ( this.nextShot == 0 ){
+			System.out.println(this.nextShot);
+			this.nextShot = time;
 		}
 	}
 
 	
-	public void shoot(List<Shoot> listShoots, Player player) {
+	public void shot(List<Shot> listShots, Player player) {
 		long currentTime = System.currentTimeMillis();
-		if(currentTime > this.nextShoot && shootNow ){
-			this.nextShoot = (long) (currentTime + 200 + Math.random() * 500);
+		if(currentTime > this.nextShot && shootNow ){
+			this.nextShot = (long) (currentTime + 200 + Math.random() * 500);
 			double [] angles = { Math.PI/2 + Math.PI/8, Math.PI/2, Math.PI/2 - Math.PI/8 };
 					
-			Shoot shoot1 = new ShootEnemy2(this, angles[0] + Math.random() * Math.PI/6 - Math.PI/12);
-			Shoot shoot2 = new ShootEnemy2(this, angles[1] + Math.random() * Math.PI/6 - Math.PI/12);
-			Shoot shoot3 = new ShootEnemy2(this, angles[2] + Math.random() * Math.PI/6 - Math.PI/12);
-			listShoots.add(shoot1);
-			listShoots.add(shoot2);
-			listShoots.add(shoot3);
+			Shot shot1 = new ShotEnemy2(this, angles[0] + Math.random() * Math.PI/6 - Math.PI/12);
+			Shot shot2 = new ShotEnemy2(this, angles[1] + Math.random() * Math.PI/6 - Math.PI/12);
+			Shot shot3 = new ShotEnemy2(this, angles[2] + Math.random() * Math.PI/6 - Math.PI/12);
+			listShots.add(shot1);
+			listShots.add(shot2);
+			listShots.add(shot3);
 		}
 	}
 

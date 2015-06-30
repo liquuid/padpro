@@ -2,8 +2,8 @@ import java.awt.Color;
 import java.util.List;
 
 
-public class ShootEnemy2 implements Shoot {
-	
+public class ShotEnemy1 implements Shot {
+
 	public static final int INACTIVE = 0;
 	public static final int ACTIVE = 1;
 	public static final int EXPLODING = 2;
@@ -16,43 +16,15 @@ public class ShootEnemy2 implements Shoot {
 	private double radius = 2.0;
 	
 
-	public ShootEnemy2(Enemy enemy, double a) {
+	public ShotEnemy1(Enemy enemy) {
 		this.x = enemy.posX();
 		this.y = enemy.posY();
-		this.vx = Math.cos(a) * 0.30;
-		this.vy = Math.sin(a) * 0.30;
-	}
-
-	@Override
-	public void draw() {
-		if(this.state == ACTIVE){
-			GameLib.setColor(Color.RED);
-			GameLib.drawCircle(this.x, this.y, this.radius);
-		}
-	}
-
-	@Override
-	public void move(double delta) {
-		this.x += this.vx * delta;
-		this.y += this.vy * delta;
-	}
-	public int getState() {
-		return state;
-	}
-
-	public void setState(int state) {
-		this.state = state;
+		this.vx = Math.cos(enemy.getAngle()) * 0.45;
+		this.vy = Math.sin(enemy.getAngle()) * 0.45 * (-1.0);
+				
 	}
 
 
-	public double getRadius() {
-		return radius;
-	}
-
-
-	public void setRadius(double radius) {
-		this.radius = radius;
-	}
 	public double getX() {
 		return x;
 	}
@@ -92,6 +64,44 @@ public class ShootEnemy2 implements Shoot {
 		this.vy = vy;
 	}
 
+
+	@Override
+	public void draw() {
+		if(this.state == ACTIVE){
+			GameLib.setColor(Color.RED);
+			GameLib.drawCircle(this.x, this.y, this.radius);
+		}
+		
+	}
+
+
+	@Override
+	public void move(double delta) {
+		this.x += this.vx * delta;
+		this.y += this.vy * delta;
+	}
+
+
+	public int getState() {
+		return state;
+	}
+
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+
+	public double getRadius() {
+		return radius;
+	}
+
+
+	public void setRadius(double radius) {
+		this.radius = radius;
+	}
+
+
 	@Override
 	public void colisionDetection(Player player) {
 		if (player.getState() == ACTIVE) {
@@ -108,10 +118,10 @@ public class ShootEnemy2 implements Shoot {
 		}
 	}
 
+
 	@Override
 	public void colisionDetection(List<Enemy> enemies) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

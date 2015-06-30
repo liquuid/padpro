@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.util.List;
 
 
-public class ShootPlayer implements Shoot {
+public class ShotPlayer implements Shot {
 	public static final int INACTIVE = 0;
 	public static final int ACTIVE = 1;
 	public static final int EXPLODING = 2;
@@ -14,7 +14,7 @@ public class ShootPlayer implements Shoot {
 	private int state = ACTIVE;
 	private double radius = 2.0;
 	
-	public ShootPlayer(Player player) {
+	public ShotPlayer(Player player) {
 		this.x = player.getX();
 		this.y = player.getY() - 2 * player.getRadius() ;
 	}

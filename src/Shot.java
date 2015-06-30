@@ -1,7 +1,7 @@
 import java.util.List;
 
 
-public interface Shoot {
+public interface Shot {
 	public void draw();
 	public void move(double delta);
 	public void setRadius(double radius);

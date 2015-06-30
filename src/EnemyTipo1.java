@@ -16,12 +16,12 @@ public class EnemyTipo1 implements Enemy {
 	private double rv;					// velocidades de rotação
 	private double explosion_start;		// instantes dos inícios das explosões
 	private double explosion_end;		// instantes dos finais da explosões
-	private long nextShoot;				// instantes do próximo tiro
+	private long nextShot;				// instantes do próximo tiro
 	private double radius = 9.0;		    // raio (tamanho do inimigo 1)
 
-	public EnemyTipo1(int state, long nextShoot) {
+	public EnemyTipo1(int state, long nextShot) {
 		this.state = state;
-		this.nextShoot = nextShoot;
+		this.nextShot = nextShot;
 		this.x = Math.random() * (GameLib.WIDTH - 20.0) + 10.0;
 		this.y = -10.0;
 		this.v = 0.20 + Math.random() * 0.15;
@@ -134,15 +134,15 @@ public class EnemyTipo1 implements Enemy {
 	}
 
 	@Override
-	public double getNextShoot() {
-		return this.nextShoot;
+	public double getNextShot() {
+		return this.nextShot;
 	}
 
 	@Override
-	public void setNextShoot(long time) {
-		if ( this.nextShoot == 0 ){
-			System.out.println(this.nextShoot);
-			this.nextShoot = time;
+	public void setNextShot(long time) {
+		if ( this.nextShot == 0 ){
+			System.out.println(this.nextShot);
+			this.nextShot = time;
 		}
 	}
 
@@ -162,15 +162,13 @@ public class EnemyTipo1 implements Enemy {
 		}
 	}
 
-	public void shoot(List<Shoot> listShoots, Player player) {
+	public void shot(List<Shot> listShots, Player player) {
 		long currentTime = System.currentTimeMillis();
 		
-		if(currentTime > this.nextShoot && this.y < player.getY()){
-			this.nextShoot = (long) (currentTime + 200 + Math.random() * 500);
-			
-			//System.out.println("curr " +  currentTime + " this.nextShoot " + this.nextShoot  + " this.y " + this.y + " player_Y " + player_Y); 
-			Shoot shoot = new ShootEnemy1(this);
-			listShoots.add(shoot);
+		if(currentTime > this.nextShot && this.y < player.getY()){
+			this.nextShot = (long) (currentTime + 200 + Math.random() * 500);
+			Shot shot = new ShotEnemy1(this);
+			listShots.add(shot);
 		}
 	}
 
