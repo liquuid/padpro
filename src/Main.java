@@ -176,13 +176,13 @@ public class Main {
 				
 				/* colisões player - projeteis (inimigo) */
 				
-				for(int i = 0; i < e_projectile_states.length; i++){
+				for(Shoot shoot : shoots){
 					
-					double dx = e_projectile_X[i] - player_X;
-					double dy = e_projectile_Y[i] - player_Y;
+					double dx = shoot.getX() - player_X;
+					double dy = shoot.getY() - player_Y;
 					double dist = Math.sqrt(dx * dx + dy * dy);
 					
-					if(dist < (player_radius + e_projectile_radius) * 0.8){
+					if(dist < (player_radius + shoot.getRadius()) * 0.8){
 						
 						player_state = EXPLODING;
 						player_explosion_start = currentTime;
