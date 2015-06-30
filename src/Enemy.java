@@ -1,7 +1,9 @@
+import java.util.List;
+
 
 public interface Enemy {
 	public void draw();
-	public void move(long delta, Player p);
+	public void move(long delta);
 	public double posX();
 	public double posY();
 	public void setPosX(double x);
@@ -19,6 +21,8 @@ public interface Enemy {
 	public void setRV(double rv);
 	public double getAngle();
 	public void setAngle(double angle);
-	public double getNextShoot();
-	public void setNextShoot(long time);
+	public double getNextShot();
+	public void setNextShot(long time);
+	public void shot(List<Shot> listShots, Player player);
+	public void colisionDetection(Player player);
 }

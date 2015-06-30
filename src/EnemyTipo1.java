@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 
 public class EnemyTipo1 implements Enemy {
@@ -15,20 +16,18 @@ public class EnemyTipo1 implements Enemy {
 	private double rv;					// velocidades de rotação
 	private double explosion_start;		// instantes dos inícios das explosões
 	private double explosion_end;		// instantes dos finais da explosões
-	private long nextShoot;				// instantes do próximo tiro
+	private long nextShot;				// instantes do próximo tiro
 	private double radius = 9.0;		    // raio (tamanho do inimigo 1)
-	private Shoot tiro;
 
-	public EnemyTipo1(int state, long nextShoot, Shoot tiro) {
+	public EnemyTipo1(int state, long nextShot) {
 		this.state = state;
-		this.nextShoot = nextShoot;
+		this.nextShot = nextShot;
 		this.x = Math.random() * (GameLib.WIDTH - 20.0) + 10.0;
 		this.y = -10.0;
 		this.v = 0.20 + Math.random() * 0.15;
 		this.angle = 3 * Math.PI / 2;
 		this.rv = 0.0;
-		this.tiro = tiro;
-		System.out.println("tipo1");
+
 	}
 
 	@Override
@@ -69,7 +68,6 @@ public class EnemyTipo1 implements Enemy {
 	@Override
 	public void setState(int state) {
 		this.state = state ;
-		System.out.println(state);
 	}
 
 	@Override
@@ -136,19 +134,20 @@ public class EnemyTipo1 implements Enemy {
 	}
 
 	@Override
-	public double getNextShoot() {
-		return this.nextShoot;
+	public double getNextShot() {
+		return this.nextShot;
 	}
 
 	@Override
-	public void setNextShoot(long time) {
-		this.nextShoot = time;
-		
+	public void setNextShot(long time) {
+		if ( this.nextShot == 0 ){
+			System.out.println(this.nextShot);
+			this.nextShot = time;
+		}
 	}
 
-	
-	public void move(long delta, Player p) {
-		long currentTime = System.currentTimeMillis();
+	@Override
+	public void move(long delta) {
 		if(this.state == ACTIVE){
 			/* verificando se inimigo saiu da tela */
 			if(this.y > GameLib.HEIGHT + 10) {
@@ -158,12 +157,36 @@ public class EnemyTipo1 implements Enemy {
 				this.x += this.v * Math.cos(this.angle) * delta;
 				this.y += this.v * Math.sin(this.angle) * delta * (-1.0);
 				this.angle += this.rv * delta;
-				
-				if(currentTime > this.nextShoot && this.y < p.getPlayer_Y()){																	
-					tiro.atira(delta, this.x, this.y, (Math.cos(angle) * 0.45), (Math.sin(angle) * 0.45 * (-1.0)), this.angle);
-					this.nextShoot = (long) (currentTime + 200 + Math.random() * 500);
-				}
+
 			}
 		}
 	}
+
+	public void shot(List<Shot> listShots, Player player) {
+		long currentTime = System.currentTimeMillis();
+		
+		if(currentTime > this.nextShot && this.y < player.getY()){
+			this.nextShot = (long) (currentTime + 200 + Math.random() * 500);
+			Shot shot = new ShotEnemy1(this);
+			listShots.add(shot);
+		}
+	}
+
+	@Override
+	public void colisionDetection(Player player) {
+		if (player.getState() == ACTIVE){
+			double dx = this.x - player.getX();
+			double dy = this.y - player.getY();
+			double dist = Math.sqrt(dx * dx + dy * dy);
+							
+			if(dist < (player.getRadius() + this.radius) * 0.8){
+				long currentTime = System.currentTimeMillis();
+				player.setState(EXPLODING);
+				player.setExplosion_start(currentTime);
+				player.setExplosion_end(currentTime + 2000);
+			}
+		}
+		
+	}
+	
 }

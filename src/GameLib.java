@@ -111,7 +111,11 @@ public class GameLib {
 		int r = (int) (255 - Math.pow(alpha, p) * 255);
 		int g = (int) (128 - Math.pow(alpha, p) * 128);
 		int b = 0;
-
+		
+		if (r < 0)
+			r = 0;
+		if (g < 0)
+			g = 0;
 		GameLib.setColor(new Color(r, g, b));
 		GameLib.drawCircle(x, y, alpha * alpha * 40);
 		GameLib.drawCircle(x, y, alpha * alpha * 40 + 1);
