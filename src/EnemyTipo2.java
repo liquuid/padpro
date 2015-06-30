@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 public class EnemyTipo2 implements Enemy {
 	public static final int INACTIVE = 0;
@@ -15,6 +16,7 @@ public class EnemyTipo2 implements Enemy {
 	private double explosion_end; // instantes dos finais da explosões
 	private long nextShoot; // instantes do próximo tiro
 	private double radius = 12.0; // raio (tamanho do inimigo 1)
+	private boolean shootNow = false;
 
 	public EnemyTipo2(int state, long nextShoot, double enemy2_spawnX) {
 		this.state = state;
@@ -56,8 +58,7 @@ public class EnemyTipo2 implements Enemy {
 
 				this.state = INACTIVE;
 			} else {
-
-				boolean shootNow = false;
+				shootNow = false;
 				double previousY = this.y;
 
 				this.x += this.v * Math.cos(this.angle) * delta;
@@ -86,31 +87,6 @@ public class EnemyTipo2 implements Enemy {
 					this.rv = 0.0;
 					this.angle = 0.0;
 					shootNow = true;
-				}
-				if (shootNow) {
-					// SHOOT NOW !!!
-
-					/*	double [] angles = { Math.PI/2 + Math.PI/8, Math.PI/2, Math.PI/2 - Math.PI/8 };
-						int [] freeArray = findFreeIndex(e_projectile_states, angles.length);
-
-						for(int k = 0; k < freeArray.length; k++){
-							
-							int free = freeArray[k];
-							
-							if(free < e_projectile_states.length){
-								
-								double a = angles[k] + Math.random() * Math.PI/6 - Math.PI/12;
-								double vx = Math.cos(a);
-								double vy = Math.sin(a);
-									
-								e_projectile_X[free] = enemy2_X[i];
-								e_projectile_Y[free] = enemy2_Y[i];
-								e_projectile_VX[free] = vx * 0.30;
-								e_projectile_VY[free] = vy * 0.30;
-								e_projectile_states[free] = 1;
-							}
-						}
-					}*/
 					
 				}
 			}
@@ -215,7 +191,26 @@ public class EnemyTipo2 implements Enemy {
 
 	@Override
 	public void setNextShoot(long time) {
-		this.nextShoot = time;
+		if ( this.nextShoot == 0 ){
+			System.out.println(this.nextShoot);
+			this.nextShoot = time;
+		}
+	}
+
+	
+	public void shoot(List<Shoot> listShoots, double p) {
+		long currentTime = System.currentTimeMillis();
+		if(currentTime > this.nextShoot && shootNow ){
+			this.nextShoot = (long) (currentTime + 200 + Math.random() * 500);
+			double [] angles = { Math.PI/2 + Math.PI/8, Math.PI/2, Math.PI/2 - Math.PI/8 };
+					
+			Shoot shoot1 = new ShootEnemy2(this, angles[0] + Math.random() * Math.PI/6 - Math.PI/12);
+			Shoot shoot2 = new ShootEnemy2(this, angles[1] + Math.random() * Math.PI/6 - Math.PI/12);
+			Shoot shoot3 = new ShootEnemy2(this, angles[2] + Math.random() * Math.PI/6 - Math.PI/12);
+			listShoots.add(shoot1);
+			listShoots.add(shoot2);
+			listShoots.add(shoot3);
+		}
 	}
 
 }

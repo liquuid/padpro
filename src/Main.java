@@ -20,6 +20,10 @@ public class Main {
 	
 	private static List<Enemy> enemies = new ArrayList<Enemy>();
 	
+	/* Lista com todos projeteis */
+	
+	private static List<Shoot> shoots = new ArrayList<Shoot>();
+	
 	
 	/* Espera, sem fazer nada, até que o instante de tempo atual seja */
 	/* maior ou igual ao instante especificado no parâmetro "time.    */
@@ -128,7 +132,7 @@ public class Main {
 		/* inicializações */
 		
 		for(int i = 0; i < projectile_states.length; i++) projectile_states[i] = INACTIVE;
-		for(int i = 0; i < e_projectile_states.length; i++) e_projectile_states[i] = INACTIVE;
+		//for(int i = 0; i < e_projectile_states.length; i++) e_projectile_states[i] = INACTIVE;
 		
 		/*for(int i = 0; i < 10; i++) {
 			enemies.add(new EnemyTipo1( INACTIVE, (currentTime + 500)));
@@ -258,19 +262,18 @@ public class Main {
 			
 			/* projeteis (inimigos) */
 			
-			for(int i = 0; i < e_projectile_states.length; i++){
+			for(Shoot shoot : shoots){
 				
-				if(e_projectile_states[i] == ACTIVE){
+				if(shoot.getState() == ACTIVE){
 					
 					/* verificando se projétil saiu da tela */
-					if(e_projectile_Y[i] > GameLib.HEIGHT) {
+					if(shoot.getY() > GameLib.HEIGHT) {
 						
-						e_projectile_states[i] = INACTIVE;
+						shoot.setState(INACTIVE);
 					}
 					else {
-					
-						e_projectile_X[i] += e_projectile_VX[i] * delta;
-						e_projectile_Y[i] += e_projectile_VY[i] * delta;
+						shoot.move(delta);
+
 					}
 				}
 			}
@@ -287,6 +290,9 @@ public class Main {
 				}
 				enemy.move(delta);
 				// Ele atirava daqui .......
+				enemy.shoot(shoots,player_Y);
+				enemy.setNextShoot((long) (currentTime + 200 + Math.random() * 500));
+				
 			}
 			
 			/* verificando se novos inimigos (tipo 1) devem ser "lançados" */
@@ -296,7 +302,7 @@ public class Main {
 				enemies.add(new EnemyTipo1(ACTIVE, (currentTime + 500)));
 
 			}
-			System.out.println(enemies.size());
+			//System.out.println(shoots.size());
 			
 			/* verificando se novos inimigos (tipo 2) devem ser "lançados" */
 			
@@ -403,16 +409,20 @@ public class Main {
 			
 			/* desenhando projeteis (inimigos) */
 		
-			for(int i = 0; i < e_projectile_states.length; i++){
+			/*for(int i = 0; i < e_projectile_states.length; i++){
 				
 				if(e_projectile_states[i] == ACTIVE){
 	
 					GameLib.setColor(Color.RED);
 					GameLib.drawCircle(e_projectile_X[i], e_projectile_Y[i], e_projectile_radius);
 				}
+			}*/
+			
+			for (Shoot shoot : shoots){
+				shoot.draw();
 			}
 			
-			/* desenhando inimigos (tipo 1) */
+			/* desenhando inimigos */
 			
 			for(Enemy enemy : enemies){
 				enemy.draw();
@@ -422,7 +432,7 @@ public class Main {
 			
 			for(Enemy enemy : enemies){
 				if (enemy.state() == INACTIVE ){
-					System.out.println("removendo");
+					//System.out.println("removendo");
 					enemies.remove(enemy);
 					break;
 				}

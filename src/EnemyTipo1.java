@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 
 public class EnemyTipo1 implements Enemy {
@@ -26,9 +27,7 @@ public class EnemyTipo1 implements Enemy {
 		this.v = 0.20 + Math.random() * 0.15;
 		this.angle = 3 * Math.PI / 2;
 		this.rv = 0.0;
-		System.out.println("tipo1");
-		
-		
+
 	}
 
 	@Override
@@ -69,7 +68,6 @@ public class EnemyTipo1 implements Enemy {
 	@Override
 	public void setState(int state) {
 		this.state = state ;
-		System.out.println(state);
 	}
 
 	@Override
@@ -142,13 +140,14 @@ public class EnemyTipo1 implements Enemy {
 
 	@Override
 	public void setNextShoot(long time) {
-		this.nextShoot = time;
-		
+		if ( this.nextShoot == 0 ){
+			System.out.println(this.nextShoot);
+			this.nextShoot = time;
+		}
 	}
 
 	@Override
 	public void move(long delta) {
-		long currentTime = System.currentTimeMillis();
 		if(this.state == ACTIVE){
 			/* verificando se inimigo saiu da tela */
 			if(this.y > GameLib.HEIGHT + 10) {
@@ -158,19 +157,20 @@ public class EnemyTipo1 implements Enemy {
 				this.x += this.v * Math.cos(this.angle) * delta;
 				this.y += this.v * Math.sin(this.angle) * delta * (-1.0);
 				this.angle += this.rv * delta;
-				
-				/*if(currentTime > this.nextShoot && this.y < player_Y){																	
-					int free = findFreeIndex(e_projectile_states);
-					if(free < e_projectile_states.length){
-						e_projectile_X[free] = enemy.posX();
-						e_projectile_Y[free] = enemy.posY();
-						e_projectile_VX[free] = Math.cos(enemy.getAngle()) * 0.45;
-						e_projectile_VY[free] = Math.sin(enemy.getAngle()) * 0.45 * (-1.0);
-						e_projectile_states[free] = 1;
-						enemy.setNextShoot((long) (currentTime + 200 + Math.random() * 500));
-					}
-				}*/
+
 			}
+		}
+	}
+
+	public void shoot(List<Shoot> listShoots, double player_Y) {
+		long currentTime = System.currentTimeMillis();
+		
+		if(currentTime > this.nextShoot && this.y < player_Y){
+			this.nextShoot = (long) (currentTime + 200 + Math.random() * 500);
+			
+			//System.out.println("curr " +  currentTime + " this.nextShoot " + this.nextShoot  + " this.y " + this.y + " player_Y " + player_Y); 
+			Shoot shoot = new ShootEnemy1(this);
+			listShoots.add(shoot);
 		}
 	}
 	
