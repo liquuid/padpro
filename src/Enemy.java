@@ -23,6 +23,6 @@ public interface Enemy {
 	public void setAngle(double angle);
 	public double getNextShoot();
 	public void setNextShoot(long time);
-	public void shoot(List<Shoot> listShoots, double player_Y);
+	public void shoot(List<Shoot> listShoots, Player player);
 	//public void shoot(List<Shoot> listShoots);
 }

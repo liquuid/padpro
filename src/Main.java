@@ -83,24 +83,8 @@ public class Main {
 
 		/* variáveis do player */
 		
-		int player_state = ACTIVE;								// estado
-		double player_X = GameLib.WIDTH / 2;					// coordenada x
-		double player_Y = GameLib.HEIGHT * 0.90;				// coordenada y
-		double player_VX = 0.25;								// velocidade no eixo x
-		double player_VY = 0.25;								// velocidade no eixo y
-		double player_radius = 12.0;							// raio (tamanho aproximado do player)
-		double player_explosion_start = 0;						// instante do início da explosão
-		double player_explosion_end = 0;						// instante do final da explosão
-		long player_nextShot = currentTime;						// instante a partir do qual pode haver um próximo tiro
-
-		/* variáveis dos projéteis disparados pelo player */
+		Player player = new Player(GameLib.WIDTH / 2,GameLib.HEIGHT * 0.90 );
 		
-		int [] projectile_states = new int[10];					// estados
-		double [] projectile_X = new double[10];				// coordenadas x
-		double [] projectile_Y = new double[10];				// coordenadas y
-		double [] projectile_VX = new double[10];				// velocidades no eixo x
-		double [] projectile_VY = new double[10];				// velocidades no eixo y
-
 		/* variáveis dos inimigos tipo 1 */
 		
 		long nextEnemy1 = currentTime + 2000;					// instante em que um novo inimigo 1 deve aparecer
@@ -119,11 +103,7 @@ public class Main {
 		for(int i = 0; i != 20; i++){
 			background.add(new StarFront(0.070, Color.GRAY));
 		}
-				
-		/* inicializações */
-		
-		// TODO: for(int i = 0; i < projectile_states.length; i++) projectile_states[i] = INACTIVE;
-								
+									
 		/* iniciado interface gráfica */
 		
 		GameLib.initGraphics();
@@ -163,35 +143,34 @@ public class Main {
 			/* Verificação de colisões */
 			/***************************/
 						
-			if(player_state == ACTIVE){
+			if(player.getState() == ACTIVE){
 				
 				/* colisões player - projeteis (inimigo) */
 				
 				for(Shoot shoot : shoots){
 					
-					double dx = shoot.getX() - player_X;
-					double dy = shoot.getY() - player_Y;
+					double dx = shoot.getX() - player.getX();
+					double dy = shoot.getY() - player.getY();
 					double dist = Math.sqrt(dx * dx + dy * dy);
 					
-					if(dist < (player_radius + shoot.getRadius()) * 0.8){
-						
-						player_state = EXPLODING;
-						player_explosion_start = currentTime;
-						player_explosion_end = currentTime + 2000;
+					if(dist < (player.getRadius() + shoot.getRadius()) * 0.8){
+						player.setState(EXPLODING);
+						player.setExplosion_start(currentTime);
+						player.setExplosion_end(currentTime + 2000);
 					}
 				}
 				
 			    /* colisão do player com os inimigos */	
 				
 				for (Enemy enemy : enemies){
-					double dx = enemy.posX() - player_X;
-					double dy = enemy.posY() - player_Y;
+					double dx = enemy.posX() - player.getX();
+					double dy = enemy.posY() - player.getY();
 					double dist = Math.sqrt(dx * dx + dy * dy);
 									
-					if(dist < (player_radius + enemy.radius()) * 0.8){
-						player_state = EXPLODING;
-						player_explosion_start = currentTime;
-						player_explosion_end = currentTime + 2000;
+					if(dist < (player.getRadius() + enemy.radius()) * 0.8){
+						player.setState(EXPLODING);
+						player.setExplosion_start(currentTime);
+						player.setExplosion_end(currentTime + 2000);
 					}
 				}
 			}
@@ -266,7 +245,7 @@ public class Main {
 					}
 				}
 				enemy.move(delta);
-				enemy.shoot(shoots,player_Y);
+				enemy.shoot(shoots,player);
 				enemy.setNextShoot((long) (currentTime + 200 + Math.random() * 500));
 				
 			}
@@ -298,11 +277,11 @@ public class Main {
 
 			/* Verificando se a explosão do player já acabou.         */
 			/* Ao final da explosão, o player volta a ser controlável */
-			if(player_state == EXPLODING){
+			if(player.getState() == EXPLODING){
 				
-				if(currentTime > player_explosion_end){
+				if(currentTime > player.getExplosion_end()){
 					
-					player_state = ACTIVE;
+					player.setState(ACTIVE);
 				}
 			}
 			
@@ -310,24 +289,19 @@ public class Main {
 			/* Verificando entrada do usuário (teclado) */
 			/********************************************/
 			
-			if(player_state == ACTIVE){
+			if(player.getState() == ACTIVE){
 				
-				if(GameLib.iskeyPressed(GameLib.KEY_UP)) player_Y -= delta * player_VY;
-				if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player_Y += delta * player_VY;
-				if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player_X -= delta * player_VX;
-				if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player_X += delta * player_VY;
+				if(GameLib.iskeyPressed(GameLib.KEY_UP)) player.setY(player.getY() - delta * player.getVy());
+				if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player.setY(player.getY() + delta * player.getVy());
+				if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player.setX(player.getX() - delta * player.getVx());
+				if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player.setX(player.getX() + delta * player.getVx());
 				if(GameLib.iskeyPressed(GameLib.KEY_CONTROL)) {
 					
-					if(currentTime > player_nextShot){
-						
-						int free = findFreeIndex(projectile_states);
-												
-						if(free < projectile_states.length){
-							
-							shoots.add(new ShootPlayer(player_X ,player_Y - 2 * player_radius ));
+					if(currentTime > player.getNextShot()){
+													
+							shoots.add(new ShootPlayer(player.getX() ,player.getY() - 2 * player.getRadius() ));
+							player.setNextShot(currentTime + 100);
 
-							player_nextShot = currentTime + 100;
-						}
 					}	
 				}
 			}
@@ -337,10 +311,10 @@ public class Main {
 			/* Verificando se coordenadas do player ainda estão dentro	*/
 			/* da tela de jogo após processar entrada do usuário.       */
 			
-			if(player_X < 0.0) player_X = 0.0;
-			if(player_X >= GameLib.WIDTH) player_X = GameLib.WIDTH - 1;
-			if(player_Y < 25.0) player_Y = 25.0;
-			if(player_Y >= GameLib.HEIGHT) player_Y = GameLib.HEIGHT - 1;
+			if(player.getX() < 0.0) player.setX(0.0);
+			if(player.getX() >= GameLib.WIDTH) player.setX(GameLib.WIDTH - 1);
+			if(player.getY() < 25.0) player.setY(25.0);
+			if(player.getY() >= GameLib.HEIGHT) player.setY(GameLib.HEIGHT - 1);
 
 			/*******************/
 			/* Desenho da cena */
@@ -356,31 +330,9 @@ public class Main {
 						
 			/* desenhando player */
 			
-			if(player_state == EXPLODING){
-				
-				double alpha = (currentTime - player_explosion_start) / (player_explosion_end - player_explosion_start);
-				GameLib.drawExplosion(player_X, player_Y, alpha);
-			}
-			else{
-				
-				GameLib.setColor(Color.BLUE);
-				GameLib.drawPlayer(player_X, player_Y, player_radius);
-			}
-				
-			/* deenhando projeteis (player) */
+			player.draw();
 			
-			/*for(int i = 0; i < projectile_states.length; i++){
-				
-				if(projectile_states[i] == ACTIVE){
-					
-					GameLib.setColor(Color.GREEN);
-					GameLib.drawLine(projectile_X[i], projectile_Y[i] - 5, projectile_X[i], projectile_Y[i] + 5);
-					GameLib.drawLine(projectile_X[i] - 1, projectile_Y[i] - 3, projectile_X[i] - 1, projectile_Y[i] + 3);
-					GameLib.drawLine(projectile_X[i] + 1, projectile_Y[i] - 3, projectile_X[i] + 1, projectile_Y[i] + 3);
-				}
-			}*/
-			
-			/* desenhando projeteis (inimigos) */
+			/* desenhando projeteis */
 			
 			for (Shoot shoot : shoots){
 				shoot.draw();

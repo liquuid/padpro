@@ -198,7 +198,7 @@ public class EnemyTipo2 implements Enemy {
 	}
 
 	
-	public void shoot(List<Shoot> listShoots, double p) {
+	public void shoot(List<Shoot> listShoots, Player player) {
 		long currentTime = System.currentTimeMillis();
 		if(currentTime > this.nextShoot && shootNow ){
 			this.nextShoot = (long) (currentTime + 200 + Math.random() * 500);
