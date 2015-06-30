@@ -132,16 +132,6 @@ public class Main {
 		/* inicializações */
 		
 		for(int i = 0; i < projectile_states.length; i++) projectile_states[i] = INACTIVE;
-		//for(int i = 0; i < e_projectile_states.length; i++) e_projectile_states[i] = INACTIVE;
-		
-		/*for(int i = 0; i < 10; i++) {
-			enemies.add(new EnemyTipo1( INACTIVE, (currentTime + 500)));
-		}
-		for(int i = 0; i < 10; i++) {
-			enemies.add(new EnemyTipo2( INACTIVE, (currentTime + 500),enemy2_spawnX));
-		}*/
-		
-		/* for(int i = 0; i < enemy2_states.length; i++) enemy2_states[i] = INACTIVE; */
 								
 		/* iniciado interface gráfica */
 		
@@ -262,18 +252,14 @@ public class Main {
 			
 			/* projeteis (inimigos) */
 			
-			for(Shoot shoot : shoots){
-				
+			for(Shoot shoot : shoots){		
 				if(shoot.getState() == ACTIVE){
-					
 					/* verificando se projétil saiu da tela */
 					if(shoot.getY() > GameLib.HEIGHT) {
-						
 						shoot.setState(INACTIVE);
 					}
 					else {
 						shoot.move(delta);
-
 					}
 				}
 			}
@@ -289,7 +275,6 @@ public class Main {
 					}
 				}
 				enemy.move(delta);
-				// Ele atirava daqui .......
 				enemy.shoot(shoots,player_Y);
 				enemy.setNextShoot((long) (currentTime + 200 + Math.random() * 500));
 				
@@ -302,7 +287,7 @@ public class Main {
 				enemies.add(new EnemyTipo1(ACTIVE, (currentTime + 500)));
 
 			}
-			//System.out.println(shoots.size());
+			System.out.println(shoots.size());
 			
 			/* verificando se novos inimigos (tipo 2) devem ser "lançados" */
 			
@@ -408,15 +393,6 @@ public class Main {
 			}
 			
 			/* desenhando projeteis (inimigos) */
-		
-			/*for(int i = 0; i < e_projectile_states.length; i++){
-				
-				if(e_projectile_states[i] == ACTIVE){
-	
-					GameLib.setColor(Color.RED);
-					GameLib.drawCircle(e_projectile_X[i], e_projectile_Y[i], e_projectile_radius);
-				}
-			}*/
 			
 			for (Shoot shoot : shoots){
 				shoot.draw();
@@ -432,8 +408,14 @@ public class Main {
 			
 			for(Enemy enemy : enemies){
 				if (enemy.state() == INACTIVE ){
-					//System.out.println("removendo");
 					enemies.remove(enemy);
+					break;
+				}
+			}
+			
+			for(Shoot shoot : shoots){
+				if (shoot.getState() == INACTIVE ){
+					shoots.remove(shoot);
 					break;
 				}
 			}
