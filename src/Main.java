@@ -32,43 +32,7 @@ public class Main {
 		
 		while(System.currentTimeMillis() < time) Thread.yield();
 	}
-	
-	/* Encontra e devolve o primeiro índice do  */
-	/* array referente a uma posição "inativa". */
-	
-	public static int findFreeIndex(int [] stateArray){
 		
-		int i;
-		
-		for(i = 0; i < stateArray.length; i++){
-			
-			if(stateArray[i] == INACTIVE) break;
-		}
-		
-		return i;
-	}
-	
-	/* Encontra e devolve o conjunto de índices (a quantidade */
-	/* de índices é defnida através do parâmetro "amount") do */
-	/* array, referentes a posições "inativas".               */ 
-
-	public static int [] findFreeIndex(int [] stateArray, int amount){
-
-		int i, k;
-		int [] freeArray = { stateArray.length, stateArray.length, stateArray.length };
-		
-		for(i = 0, k = 0; i < stateArray.length && k < amount; i++){
-				
-			if(stateArray[i] == INACTIVE) { 
-				
-				freeArray[k] = i; 
-				k++;
-			}
-		}
-		
-		return freeArray;
-	}
-	
 	/* Método principal */
 	
 	public static void main(String [] args){
@@ -143,11 +107,11 @@ public class Main {
 			/* Verificação de colisões */
 			/***************************/
 						
-			if(player.getState() == ACTIVE){
+			/*if(player.getState() == ACTIVE){
 				
 				/* colisões player - projeteis (inimigo) */
 				
-				for(Shoot shoot : shoots){
+				/*for(Shoot shoot : shoots){
 					
 					double dx = shoot.getX() - player.getX();
 					double dy = shoot.getY() - player.getY();
@@ -158,9 +122,9 @@ public class Main {
 						player.setExplosion_start(currentTime);
 						player.setExplosion_end(currentTime + 2000);
 					}
-				}
+				}*/
 				
-			    /* colisão do player com os inimigos */	
+			    /* colisão do player com os inimigos 
 				
 				for (Enemy enemy : enemies){
 					double dx = enemy.posX() - player.getX();
@@ -173,11 +137,11 @@ public class Main {
 						player.setExplosion_end(currentTime + 2000);
 					}
 				}
-			}
+			}*/
 			
 			/* colisões projeteis (player) - inimigos */
 			
-			for(Shoot shoot : shoots){
+			/*for(Shoot shoot : shoots){
 				for(Enemy enemy : enemies){
 										
 					if(enemy.state() == ACTIVE){
@@ -194,38 +158,27 @@ public class Main {
 						}
 					}
 				}
+			}*/
+			for (Enemy enemy : enemies){
+				enemy.colisionDetection(player);
 			}
+			for(Shoot shoot : shoots){
+				shoot.colisionDetection(player);
+				shoot.colisionDetection(enemies);
+			}
+			
+			
 				
 			/***************************/
 			/* Atualizações de estados */
 			/***************************/
 			
-			/* projeteis (player) */
-			
-			for(Shoot shoot : shoots){
-				
-				if(shoot.getState() == ACTIVE){
-					
-					/* verificando se projétil saiu da tela */
-					if(shoot.getY() < 0) {
-						
-						shoot.setState(INACTIVE);
-					}
-					else {
-					
-						shoot.setX(shoot.getX() + shoot.getVx() * delta);
-						shoot.setY(shoot.getY() + shoot.getVy() * delta);
-						//projectile_Y[i] += projectile_VY[i] * delta;
-					}
-				}
-			}
-			
-			/* projeteis (inimigos) */
+			/* projeteis */
 			
 			for(Shoot shoot : shoots){		
 				if(shoot.getState() == ACTIVE){
 					/* verificando se projétil saiu da tela */
-					if(shoot.getY() > GameLib.HEIGHT) {
+					if(shoot.getY() > GameLib.HEIGHT || shoot.getY() < 0 ) {
 						shoot.setState(INACTIVE);
 					}
 					else {
@@ -255,7 +208,6 @@ public class Main {
 			if (currentTime > nextEnemy1) {
 				nextEnemy1 = currentTime + 500;
 				enemies.add(new EnemyTipo1(ACTIVE, (currentTime + 500)));
-
 			}
 			System.out.println(shoots.size());
 			
@@ -278,9 +230,7 @@ public class Main {
 			/* Verificando se a explosão do player já acabou.         */
 			/* Ao final da explosão, o player volta a ser controlável */
 			if(player.getState() == EXPLODING){
-				
 				if(currentTime > player.getExplosion_end()){
-					
 					player.setState(ACTIVE);
 				}
 			}
@@ -297,11 +247,9 @@ public class Main {
 				if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player.setX(player.getX() + delta * player.getVx());
 				if(GameLib.iskeyPressed(GameLib.KEY_CONTROL)) {
 					
-					if(currentTime > player.getNextShot()){
-													
-							shoots.add(new ShootPlayer(player.getX() ,player.getY() - 2 * player.getRadius() ));
+					if(currentTime > player.getNextShot()){										
+							player.shoot(shoots);
 							player.setNextShot(currentTime + 100);
-
 					}	
 				}
 			}
@@ -326,8 +274,7 @@ public class Main {
 				estrela.move(delta);
 				estrela.draw();
 			}
-			
-						
+					
 			/* desenhando player */
 			
 			player.draw();

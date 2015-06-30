@@ -1,3 +1,5 @@
+import java.util.List;
+
 
 public interface Shoot {
 	public void draw();
@@ -14,4 +16,6 @@ public interface Shoot {
 	public void setVx(double vx);
 	public double getVy();
 	public void setVy(double vy);
+	public void colisionDetection(Player player);
+	public void colisionDetection(List<Enemy> enemies);
 }

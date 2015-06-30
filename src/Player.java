@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 
 public class Player {
@@ -23,6 +24,7 @@ public class Player {
 		this.setVy(0.25);
 		this.setRadius(12);		
 	}
+		
 	public void draw(){
 		long currentTime = System.currentTimeMillis();
 		
@@ -34,6 +36,15 @@ public class Player {
 			GameLib.setColor(Color.BLUE);
 			GameLib.drawPlayer(this.x, this.y, this.radius);
 		}
+	}
+	public void shoot(List<Shoot> listShoots){
+		long currentTime = System.currentTimeMillis();
+		
+		if(currentTime > this.nextShot){
+			this.nextShot = (long) (currentTime + 200 + Math.random() * 500);
+			Shoot shoot = new ShootPlayer(this);
+			listShoots.add(shoot);
+		}		
 	}
 	
 	public int getState() {

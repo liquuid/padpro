@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.List;
 
 
 public class ShootPlayer implements Shoot {
@@ -13,9 +14,9 @@ public class ShootPlayer implements Shoot {
 	private int state = ACTIVE;
 	private double radius = 2.0;
 	
-	public ShootPlayer(double x, double y) {
-		this.x = x;
-		this.y = y;
+	public ShootPlayer(Player player) {
+		this.x = player.getX();
+		this.y = player.getY() - 2 * player.getRadius() ;
 	}
 
 	public double getX() {
@@ -95,5 +96,34 @@ public class ShootPlayer implements Shoot {
 	public void setRadius(double radius) {
 		this.radius = radius;
 	}
+	
+	public void colisionDetection(List<Enemy> listEnemies) {
+		for (Enemy enemy : listEnemies) {
+			if (enemy.state() == ACTIVE) {
 
+				double dx = enemy.posX() - this.x;
+				double dy = enemy.posY() - this.y;
+				double dist = Math.sqrt(dx * dx + dy * dy);
+
+				if (dist < enemy.radius()) {
+					long currentTime = System.currentTimeMillis();
+
+					enemy.setState(EXPLODING);
+					enemy.setExplosionStart(currentTime);
+					enemy.setExplosionEnd(currentTime + 500);
+				}
+			}
+		}
+	}
+
+	public void colisionDetection(Object obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void colisionDetection(Player player) {
+		// TODO Auto-generated method stub
+		
+	}
 }

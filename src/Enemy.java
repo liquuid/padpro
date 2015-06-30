@@ -24,5 +24,5 @@ public interface Enemy {
 	public double getNextShoot();
 	public void setNextShoot(long time);
 	public void shoot(List<Shoot> listShoots, Player player);
-	//public void shoot(List<Shoot> listShoots);
+	public void colisionDetection(Player player);
 }
