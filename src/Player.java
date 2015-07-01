@@ -7,7 +7,7 @@ public class Player {
 	public static final int ACTIVE = 1;
 	public static final int EXPLODING = 2;
 	
-	private int state;;
+	private int state;
 	private double x;
 	private double y;
 	private double vx;

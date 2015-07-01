@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ public class Main {
 	/* Lista com todos projeteis */
 	
 	private static List<Shot> shots = new ArrayList<Shot>();
-	
 	
 	/* Espera, sem fazer nada, até que o instante de tempo atual seja */
 	/* maior ou igual ao instante especificado no parâmetro "time.    */
@@ -47,6 +45,10 @@ public class Main {
 		/* variáveis dos inimigos tipo 1 */
 		
 		long nextEnemy1 = currentTime + 2000;					// instante em que um novo inimigo 1 deve aparecer
+		
+		/* variáveis do power up */
+		PowerUP pw = new PowerUP1(INACTIVE);
+		long nextPowerUP = currentTime + 2000;
 		
 		/* variáveis dos inimigos tipo 2 */
 		
@@ -106,7 +108,9 @@ public class Main {
 				shot.colisionDetection(player);
 				shot.colisionDetection(enemies);
 			}
-			
+
+			pw.colisionDetection(player);
+
 			
 			/***************************/
 			/* Atualizações de estados */
@@ -140,6 +144,23 @@ public class Main {
 				enemy.shot(shots,player);
 				enemy.setNextShot((long) (currentTime + 200 + Math.random() * 500));
 				
+			}
+			
+			/* power ups*/
+			
+			if(pw.state() == EXPLODING){
+				if(currentTime > pw.getExplosionEnd()){
+					pw.setState(INACTIVE);
+				}
+			}
+			
+			pw.move(delta);
+			
+			/* verificando se power ups devem ser lançados*/
+			
+			if (currentTime > nextPowerUP) {
+				nextPowerUP = (long) (currentTime + 30000);
+				pw = new PowerUP1(ACTIVE);
 			}
 			
 			/* verificando se novos inimigos (tipo 1) devem ser "lançados" */
@@ -218,7 +239,7 @@ public class Main {
 			if(player.getX() < 0.0) player.setX(0.0);
 			if(player.getX() >= GameLib.WIDTH) player.setX(GameLib.WIDTH - 1);
 			if(player.getY() < 25.0) player.setY(25.0);
-			if(player.getY() >= GameLib.HEIGHT) player.setY(GameLib.HEIGHT - 1);
+			if(player.getY() >= GameLib.HEIGHT - 25) player.setY(GameLib.HEIGHT - 25);
 
 			/*******************/
 			/* Desenho da cena */
@@ -237,6 +258,10 @@ public class Main {
 			for (Shot shot : shots){
 				shot.draw();
 			}
+			
+			/* desenhando power ups*/
+			
+			pw.draw();
 			
 			/* desenhando inimigos */
 			
@@ -259,6 +284,7 @@ public class Main {
 					break;
 				}
 			}
+			
 			
 			/* chamama a display() da classe GameLib atualiza o desenho exibido pela interface do jogo. */
 			
