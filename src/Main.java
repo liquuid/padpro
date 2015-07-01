@@ -51,9 +51,10 @@ public class Main {
 		/* variáveis dos inimigos tipo 2 */
 		
 		double enemy2_spawnX = GameLib.WIDTH * 0.20;			// coordenada x do próximo inimigo tipo 2 a aparecer
-		int enemy2_count = 0;									// contagem de inimigos tipo 2 (usada na "formação de voo")
+		int enemy2_count = 0;								// contagem de inimigos tipo 2 (usada na "formação de voo")
+		int enemy3_count = 0;
 		long nextEnemy2 = currentTime + 7000;					// instante em que um novo inimigo 2 deve aparecer
-		
+		long nextEnemy3 = currentTime + 12000;
 		/* estrelas que formam o fundo */
 				
 		Background background = Background.getInstance();
@@ -147,7 +148,6 @@ public class Main {
 				nextEnemy1 = currentTime + 500;
 				enemies.add(new EnemyTipo1(ACTIVE, (currentTime + 500)));
 			}
-			System.out.println(shots.size());
 			
 			/* verificando se novos inimigos (tipo 2) devem ser "lançados" */
 			
@@ -164,6 +164,24 @@ public class Main {
 				}
 
 			}
+			
+			/* verificando se novos inimigos (tipo 3) devem ser "lançados" */
+			
+			if (currentTime > nextEnemy3) {
+
+				enemy3_count++;
+				if (enemy3_count < 10) {
+					nextEnemy3 = currentTime + 120;
+					enemies.add(new EnemyTipo3(ACTIVE, (currentTime + 500)));
+					System.out.println(enemy3_count);
+				} else {
+					enemy3_count = 0;
+					nextEnemy3 = (long) (currentTime + 20000 + Math.random() * 3000);
+				}
+
+			}
+			
+			
 
 			/* Verificando se a explosão do player já acabou.         */
 			/* Ao final da explosão, o player volta a ser controlável */

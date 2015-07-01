@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/* Singleton */
 
 public class Background {
 	private static Background instance;
