@@ -23,7 +23,7 @@ public interface Enemy {
 	public void setAngle(double angle);
 	public double getNextShot();
 	public void setNextShot(long time);
-	public void shot(List<Shot> listShots, Player player);
-	public void colisionDetection(Player player);
+	public void shot(List<Shot> listShots, ObjEffect player);
+	public void colisionDetection(ObjEffect player);
 	
 }

@@ -198,7 +198,7 @@ public class EnemyTipo2 implements Enemy {
 	}
 
 	
-	public void shot(List<Shot> listShots, Player player) {
+	public void shot(List<Shot> listShots, ObjEffect player) {
 		long currentTime = System.currentTimeMillis();
 		if(currentTime > this.nextShot && shootNow ){
 			this.nextShot = (long) (currentTime + 200 + Math.random() * 500);
@@ -214,7 +214,7 @@ public class EnemyTipo2 implements Enemy {
 	}
 
 	@Override
-	public void colisionDetection(Player player) {
+	public void colisionDetection(ObjEffect player) {
 		if (player.getState() == ACTIVE){
 			double dx = this.x - player.getX();
 			double dy = this.y - player.getY();

@@ -147,16 +147,21 @@ public class PowerUP1 implements PowerUP {
 	}
 
 	@Override
-	public void colisionDetection(Player player) {
+	public ObjEffect colisionDetection(ObjEffect player) {
+		long currentTime = System.currentTimeMillis();
 		if (player.getState() == ACTIVE){
 			double dx = this.x - player.getX();
 			double dy = this.y - player.getY();
 			double dist = Math.sqrt(dx * dx + dy * dy);
 							
 			if(dist < (player.getRadius() + this.radius) * 0.8){
-				this.state = INACTIVE;
+				this.state = EXPLODING;
+				this.explosion_start = currentTime;
+				this.explosion_end = currentTime + 1000;
+				return player = new EffectTipo1(player);
 			}
 		}
+		return player;
 	}
 	
 }

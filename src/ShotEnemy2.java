@@ -93,7 +93,7 @@ public class ShotEnemy2 implements Shot {
 	}
 
 	@Override
-	public void colisionDetection(Player player) {
+	public void colisionDetection(ObjEffect player) {
 		if (player.getState() == ACTIVE) {
 			double dx = this.x - player.getX();
 			double dy = this.y - player.getY();

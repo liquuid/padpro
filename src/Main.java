@@ -40,7 +40,7 @@ public class Main {
 
 		/* variáveis do player */
 		
-		Player player = new Player(GameLib.WIDTH / 2,GameLib.HEIGHT * 0.90 );
+		ObjEffect player = new Player(GameLib.WIDTH / 2,GameLib.HEIGHT * 0.90 );
 		
 		/* variáveis dos inimigos tipo 1 */
 		
@@ -109,7 +109,7 @@ public class Main {
 				shot.colisionDetection(enemies);
 			}
 
-			pw.colisionDetection(player);
+			player = pw.colisionDetection(player);
 
 			
 			/***************************/
@@ -159,8 +159,14 @@ public class Main {
 			/* verificando se power ups devem ser lançados*/
 			
 			if (currentTime > nextPowerUP) {
-				nextPowerUP = (long) (currentTime + 30000);
+				nextPowerUP = (long) (currentTime + 45000);
 				pw = new PowerUP1(ACTIVE);
+			}
+			
+			/* verificando se powe up deve ser terminado */
+			
+			if (currentTime > nextPowerUP - 25000) {
+				player = player.removePowerUP(player);
 			}
 			
 			/* verificando se novos inimigos (tipo 1) devem ser "lançados" */
@@ -207,6 +213,7 @@ public class Main {
 			/* Verificando se a explosão do player já acabou.         */
 			/* Ao final da explosão, o player volta a ser controlável */
 			if(player.getState() == EXPLODING){
+				player = player.removePowerUP(player);
 				if(currentTime > player.getExplosion_end()){
 					player.setState(ACTIVE);
 				}

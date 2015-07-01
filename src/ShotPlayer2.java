@@ -9,21 +9,28 @@ public class ShotPlayer2 implements Shot {
 
 	private double x;
 	private double x2;
+	private double x3;
 	private double y;
 	private double y2;
+	private double y3;
 	private double vx = 0.0;
 	private double vx2 = 0.0;
+	private double vx3 = 0.0;
 	private double vy = -1.0 ;
 	private double vy2 = -1.0 ;
+	private double vy3 = -1.0 ;
 	private int state = ACTIVE;
 	private double radius = 2.0;
 	
-	public ShotPlayer2(Player player) {
+	public ShotPlayer2(ObjEffect player) {
 		this.x = player.getX();
 		this.y = player.getY() - 2 * player.getRadius() ;
 		
 		this.x2 = player.getX();
 		this.y2 = player.getY() - 2 * player.getRadius() ;
+		
+		this.x3 = player.getX();
+		this.y3 = player.getY() - 2 * player.getRadius() ;
 	}
 
 	public double getX() {
@@ -70,7 +77,7 @@ public class ShotPlayer2 implements Shot {
 	public void draw() {
 		if(this.state == ACTIVE){
 			
-			GameLib.setColor(Color.GREEN);
+			GameLib.setColor(Color.YELLOW);
 			
 			GameLib.drawLine(this.x - 5, this.y - 3, this.x - 1, this.y + 3);
 			GameLib.drawLine(this.x - 6, this.y - 3, this.x - 2, this.y + 3);
@@ -79,6 +86,10 @@ public class ShotPlayer2 implements Shot {
 			GameLib.drawLine(this.x2 + 5, this.y2 - 3, this.x2 + 1, this.y2 + 3);
 			GameLib.drawLine(this.x2 + 6, this.y2 - 3, this.x2 + 2, this.y2 + 3);
 			GameLib.drawLine(this.x2 + 6, this.y2 - 3, this.x2 + 2, this.y2 + 3);
+			
+			GameLib.drawLine(this.x3, this.y3 - 5, this.x3, this.y3 + 5);
+			GameLib.drawLine(this.x3 - 1, this.y3 - 3, this.x3 - 1, this.y3 + 3);
+			GameLib.drawLine(this.x3 + 1, this.y3 - 3, this.x3 + 1, this.y3 + 3);
 		}
 	}
 
@@ -87,11 +98,14 @@ public class ShotPlayer2 implements Shot {
 	public void move(double delta) {
 		this.x += this.vx * delta;
 		this.y += this.vy * delta;
-		this.vx -= 0.015;
+		this.vx -= 0.005;
 		
 		this.x2 += this.vx2 * delta;
 		this.y2 += this.vy2 * delta;
-		this.vx2 += 0.015;
+		this.vx2 += 0.005;
+		
+		this.x3 += this.vx3 * delta;
+		this.y3 += this.vy3 * delta;
 	}
 
 
@@ -125,8 +139,12 @@ public class ShotPlayer2 implements Shot {
 				double dx2 = enemy.posX() - this.x2;
 				double dy2 = enemy.posY() - this.y2;
 				double dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+				
+				double dx3 = enemy.posX() - this.x3;
+				double dy3 = enemy.posY() - this.y3;
+				double dist3 = Math.sqrt(dx3 * dx3 + dy3 * dy3);
 
-				if (dist < enemy.radius() || dist2 < enemy.radius()) {
+				if (dist < enemy.radius() || dist2 < enemy.radius() || dist3 < enemy.radius()) {
 					long currentTime = System.currentTimeMillis();
 
 					enemy.setState(EXPLODING);
@@ -143,7 +161,7 @@ public class ShotPlayer2 implements Shot {
 	}
 
 	@Override
-	public void colisionDetection(Player player) {
+	public void colisionDetection(ObjEffect player) {
 		// TODO Auto-generated method stub
 		
 	}

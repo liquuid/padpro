@@ -19,6 +19,6 @@ public interface PowerUP {
 	public void setRV(double rv);
 	public double getAngle();
 	public void setAngle(double angle);
-	public void colisionDetection(Player player);
+	public ObjEffect colisionDetection(ObjEffect player);
 	
 }

@@ -122,7 +122,7 @@ public class ShotPlayer implements Shot {
 	}
 
 	@Override
-	public void colisionDetection(Player player) {
+	public void colisionDetection(ObjEffect player) {
 		// TODO Auto-generated method stub
 		
 	}

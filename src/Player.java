@@ -2,7 +2,7 @@ import java.awt.Color;
 import java.util.List;
 
 
-public class Player {
+public class Player implements ObjEffect {
 	public static final int INACTIVE = 0;
 	public static final int ACTIVE = 1;
 	public static final int EXPLODING = 2;
@@ -101,5 +101,10 @@ public class Player {
 	public void setNextShot(long nextShot) {
 		this.nextShot = nextShot;
 	}
-
+	public ObjEffect getObj(){
+		return this;
+	}
+	public ObjEffect removePowerUP(ObjEffect toRemove) {
+		return this;
+	}
 }
