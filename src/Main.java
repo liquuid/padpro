@@ -10,11 +10,7 @@ public class Main {
 	public static final int INACTIVE = 0;
 	public static final int ACTIVE = 1;
 	public static final int EXPLODING = 2;
-	
-	/* Lista com todas as estrelinhas */
-	
-	private static List<Star> background = new ArrayList<Star>();
-	
+		
 	/* Lista com todos inimigos */
 	
 	private static List<Enemy> enemies = new ArrayList<Enemy>();
@@ -60,13 +56,9 @@ public class Main {
 		
 		/* estrelas que formam o fundo */
 				
-		for(int i = 0; i != 50; i++){
-			background.add(new StarDeep(0.045, Color.DARK_GRAY));
-		}
-		for(int i = 0; i != 20; i++){
-			background.add(new StarFront(0.070, Color.GRAY));
-		}
-									
+		Background background = Background.getInstance();
+		background.init();
+				
 		/* iniciado interface gráfica */
 		
 		GameLib.initGraphics();
@@ -216,10 +208,7 @@ public class Main {
 			
 			/* desenhando plano fundo  */
 			
-			for(Star estrela : background){
-				estrela.move(delta);
-				estrela.draw();
-			}
+			background.tick(delta);
 					
 			/* desenhando player */
 			
