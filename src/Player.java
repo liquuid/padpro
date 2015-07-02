@@ -2,11 +2,13 @@ import java.awt.Color;
 import java.util.List;
 
 
+/*Singleton*/
 public class Player implements ObjEffect {
+	private static Player instance;
+	
 	public static final int INACTIVE = 0;
 	public static final int ACTIVE = 1;
 	public static final int EXPLODING = 2;
-	
 	private int state;
 	private double x;
 	private double y;
@@ -16,15 +18,29 @@ public class Player implements ObjEffect {
 	private double explosion_start;
 	private double explosion_end;
 	private long nextShot;
-	public Player(double x, double y){
-		this.setState(ACTIVE);
-		this.setX(x);
-		this.setY(y);
-		this.setVx(0.25);
-		this.setVy(0.25);
-		this.setRadius(12);		
+	
+	
+	/* Construtor Privado da Classe.*/
+	private Player() {
+	} 
+	
+	
+	/*Inplementado getInstance para criar o player único seguindo padrão Singleton*/
+	public static Player getInstance(double x, double y) {
+		if(instance == null) {
+			instance = new  Player();
+			instance.setState(ACTIVE);
+			instance.setX(x);
+			instance.setY(y);
+			instance.setVx(0.25);
+			instance.setVy(0.25);
+			instance.setRadius(12);	
+		}
+		return instance;
 	}
 		
+		
+				
 	public void draw(){
 		long currentTime = System.currentTimeMillis();
 		
