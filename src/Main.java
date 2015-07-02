@@ -40,7 +40,7 @@ public class Main {
 
 		/* variáveis do player */
 		
-		ObjEffect player = new Player(GameLib.WIDTH / 2,GameLib.HEIGHT * 0.90 );
+		ObjEffect player = Player.getInstance(GameLib.WIDTH / 2,GameLib.HEIGHT * 0.90 );
 		
 		/* variáveis dos inimigos tipo 1 */
 		

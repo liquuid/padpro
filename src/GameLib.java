@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 
+
 /***********************************************************************/
 /*                                                                     */
 /* Classe com métodos úteis para implementação de um jogo. Inclui:     */
