@@ -17,7 +17,7 @@ public class Main {
 	/* Lista com todos projeteis */
 	
 	private static List<Shot> shots = new ArrayList<Shot>();
-	
+		
 	/* Espera, sem fazer nada, até que o instante de tempo atual seja */
 	/* maior ou igual ao instante especificado no parâmetro "time.    */
 	
@@ -42,21 +42,21 @@ public class Main {
 		
 		ObjEffect player = Player.getInstance(GameLib.WIDTH / 2,GameLib.HEIGHT * 0.90 );
 		
-		/* variáveis dos inimigos tipo 1 */
+		/* Classe diretora dos inimigos
+		   instante em que um novo inimigo deve aparecer */
 		
-		long nextEnemy1 = currentTime + 2000;					// instante em que um novo inimigo 1 deve aparecer
+		EnemyTipo1Director enemyDirectorTipo1 = new EnemyTipo1Director(currentTime + 2000);
+		EnemyTipo2Director enemyDirectorTipo2 = new EnemyTipo2Director(currentTime + 7000);
+		EnemyTipo3Director enemyDirectorTipo3 = new EnemyTipo3Director(currentTime + 12000);
 		
 		/* variáveis do power up */
-		PowerUP pw = new PowerUP1(INACTIVE);
-		long nextPowerUP = currentTime + 2000;
+		PowerUP pw1 = new PowerUP1(INACTIVE);
+		long nextPowerUP1 = currentTime + 2000;
 		
-		/* variáveis dos inimigos tipo 2 */
-		
-		double enemy2_spawnX = GameLib.WIDTH * 0.20;			// coordenada x do próximo inimigo tipo 2 a aparecer
-		int enemy2_count = 0;								// contagem de inimigos tipo 2 (usada na "formação de voo")
-		int enemy3_count = 0;
-		long nextEnemy2 = currentTime + 7000;					// instante em que um novo inimigo 2 deve aparecer
-		long nextEnemy3 = currentTime + 12000;
+		/* variáveis do power up */
+		PowerUP pw2 = new PowerUP2(INACTIVE);
+		long nextPowerUP2 = currentTime + 12000;
+
 		/* estrelas que formam o fundo */
 				
 		Background background = Background.getInstance();
@@ -108,8 +108,8 @@ public class Main {
 				shot.colisionDetection(player);
 				shot.colisionDetection(enemies);
 			}
-
-			player = pw.colisionDetection(player);
+			player = pw1.colisionDetection(player);
+			player = pw2.colisionDetection(player);
 
 			
 			/***************************/
@@ -148,68 +148,49 @@ public class Main {
 			
 			/* power ups*/
 			
-			if(pw.state() == EXPLODING){
-				if(currentTime > pw.getExplosionEnd()){
-					pw.setState(INACTIVE);
+			if(pw1.state() == EXPLODING){
+				if(currentTime > pw1.getExplosionEnd()){
+					pw1.setState(INACTIVE);
 				}
 			}
 			
-			pw.move(delta);
+			if(pw2.state() == EXPLODING){
+				if(currentTime > pw2.getExplosionEnd()){
+					pw2.setState(INACTIVE);
+				}
+			}
+			
+			pw1.move(delta);
+			pw2.move(delta);
 			
 			/* verificando se power ups devem ser lançados*/
 			
-			if (currentTime > nextPowerUP) {
-				nextPowerUP = (long) (currentTime + 45000);
-				pw = new PowerUP1(ACTIVE);
+			if (currentTime > nextPowerUP1) {
+				nextPowerUP1 = (long) (currentTime + 45000);
+				pw1 = new PowerUP1(ACTIVE);
 			}
 			
+			if (currentTime > nextPowerUP2) {
+				nextPowerUP2 = (long) (currentTime + 45000);
+				pw1 = new PowerUP2(ACTIVE);
+			}
+						
 			/* verificando se powe up deve ser terminado */
 			
-			if (currentTime > nextPowerUP - 25000) {
+			/*if (currentTime > nextPowerUP1 - 25000) {
 				player = player.removePowerUP(player);
 			}
 			
-			/* verificando se novos inimigos (tipo 1) devem ser "lançados" */
+			if (currentTime > nextPowerUP2 - 25000) {
+				player = player.removePowerUP(player);
+			}*/
 			
-			if (currentTime > nextEnemy1) {
-				nextEnemy1 = currentTime + 500;
-				enemies.add(new EnemyTipo1(ACTIVE, (currentTime + 500)));
-			}
+			/* verificando se novos inimigos devem ser "lançados" */
 			
-			/* verificando se novos inimigos (tipo 2) devem ser "lançados" */
+			enemyDirectorTipo1.tick(currentTime, enemies);
+			enemyDirectorTipo2.tick(currentTime, enemies);
+			enemyDirectorTipo3.tick(currentTime, enemies);
 			
-			if (currentTime > nextEnemy2) {
-
-				enemy2_count++;
-				if (enemy2_count < 10) {
-					nextEnemy2 = currentTime + 120;
-					enemies.add(new EnemyTipo2(ACTIVE, (currentTime + 500),enemy2_spawnX ));
-				} else {
-					enemy2_count = 0;
-					enemy2_spawnX = Math.random() > 0.5 ? GameLib.WIDTH * 0.2 : GameLib.WIDTH * 0.8;
-					nextEnemy2 = (long) (currentTime + 3000 + Math.random() * 3000);
-				}
-
-			}
-			
-			/* verificando se novos inimigos (tipo 3) devem ser "lançados" */
-			
-			if (currentTime > nextEnemy3) {
-
-				enemy3_count++;
-				if (enemy3_count < 10) {
-					nextEnemy3 = currentTime + 120;
-					enemies.add(new EnemyTipo3(ACTIVE, (currentTime + 500)));
-					System.out.println(enemy3_count);
-				} else {
-					enemy3_count = 0;
-					nextEnemy3 = (long) (currentTime + 20000 + Math.random() * 3000);
-				}
-
-			}
-			
-			
-
 			/* Verificando se a explosão do player já acabou.         */
 			/* Ao final da explosão, o player volta a ser controlável */
 			if(player.getState() == EXPLODING){
@@ -268,8 +249,8 @@ public class Main {
 			
 			/* desenhando power ups*/
 			
-			pw.draw();
-			
+			pw1.draw();
+			pw2.draw();
 			/* desenhando inimigos */
 			
 			for(Enemy enemy : enemies){

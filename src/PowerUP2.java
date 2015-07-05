@@ -1,8 +1,6 @@
 import java.awt.Color;
-import java.util.List;
 
-
-public class EnemyTipo1 implements Enemy {
+public class PowerUP2 implements PowerUP {
 	public static final int INACTIVE = 0;
 	public static final int ACTIVE = 1;
 	public static final int EXPLODING = 2;
@@ -16,15 +14,13 @@ public class EnemyTipo1 implements Enemy {
 	private double rv;					// velocidades de rotação
 	private double explosion_start;		// instantes dos inícios das explosões
 	private double explosion_end;		// instantes dos finais da explosões
-	private long nextShot;				// instantes do próximo tiro
-	private double radius = 9.0;		    // raio (tamanho do inimigo 1)
+	private double radius = 20.0;		    // raio (tamanho do inimigo 1)
 
-	public EnemyTipo1(int state, long nextShot) {
+	public PowerUP2(int state) {
 		this.state = state;
-		this.nextShot = nextShot;
-		this.x = Math.random() * (GameLib.WIDTH - 20.0) + 10.0;
+		this.x = Math.random() * (GameLib.WIDTH - 20.0) + 20.0;
 		this.y = -10.0;
-		this.v = 0.20 + Math.random() * 0.15;
+		this.v = 0.1 + Math.random() * 0.15;
 		this.angle = 3 * Math.PI / 2;
 		this.rv = 0.0;
 
@@ -40,7 +36,7 @@ public class EnemyTipo1 implements Enemy {
 		
 		if(this.state == ACTIVE){
 	
-			GameLib.setColor(Color.CYAN);
+			GameLib.setColor(Color.GREEN);
 			GameLib.drawCircle(this.x, this.y, this.radius);
 		}
 		
@@ -134,21 +130,9 @@ public class EnemyTipo1 implements Enemy {
 	}
 
 	@Override
-	public double getNextShot() {
-		return this.nextShot;
-	}
-
-	@Override
-	public void setNextShot(long time) {
-		if ( this.nextShot == 0 ){
-			this.nextShot = time;
-		}
-	}
-
-	@Override
 	public void move(long delta) {
 		if(this.state == ACTIVE){
-			/* verificando se inimigo saiu da tela */
+			/* verificando se o powerup saiu da tela */
 			if(this.y > GameLib.HEIGHT + 10) {
 				this.state = INACTIVE;
 			}
@@ -161,31 +145,22 @@ public class EnemyTipo1 implements Enemy {
 		}
 	}
 
-	public void shot(List<Shot> listShots, ObjEffect player) {
-		long currentTime = System.currentTimeMillis();
-		
-		if(currentTime > this.nextShot && this.y < player.getY()){
-			this.nextShot = (long) (currentTime + 200 + Math.random() * 500);
-			Shot shot = new ShotEnemy1(this);
-			listShots.add(shot);
-		}
-	}
-
 	@Override
-	public void colisionDetection(ObjEffect player) {
+	public ObjEffect colisionDetection(ObjEffect player) {
+		long currentTime = System.currentTimeMillis();
 		if (player.getState() == ACTIVE){
 			double dx = this.x - player.getX();
 			double dy = this.y - player.getY();
 			double dist = Math.sqrt(dx * dx + dy * dy);
 							
 			if(dist < (player.getRadius() + this.radius) * 0.8){
-				long currentTime = System.currentTimeMillis();
-				player.setState(EXPLODING);
-				player.setExplosion_start(currentTime);
-				player.setExplosion_end(currentTime + 2000);
+				this.state = EXPLODING;
+				this.explosion_start = currentTime;
+				this.explosion_end = currentTime + 1000;
+				return player = new EffectTipo2(player);
 			}
 		}
-		
+		return player;
 	}
 	
 }

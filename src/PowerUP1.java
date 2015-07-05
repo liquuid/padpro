@@ -133,7 +133,7 @@ public class PowerUP1 implements PowerUP {
 	@Override
 	public void move(long delta) {
 		if(this.state == ACTIVE){
-			/* verificando se inimigo saiu da tela */
+			/* verificando se o powerup saiu da tela */
 			if(this.y > GameLib.HEIGHT + 10) {
 				this.state = INACTIVE;
 			}

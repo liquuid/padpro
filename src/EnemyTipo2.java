@@ -192,7 +192,6 @@ public class EnemyTipo2 implements Enemy {
 	@Override
 	public void setNextShot(long time) {
 		if ( this.nextShot == 0 ){
-			System.out.println(this.nextShot);
 			this.nextShot = time;
 		}
 	}
