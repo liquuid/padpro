@@ -174,7 +174,7 @@ class MyKeyAdapter extends KeyAdapter{
 								KeyEvent.VK_DOWN,
 								KeyEvent.VK_LEFT,
 								KeyEvent.VK_RIGHT, 
-								KeyEvent.VK_SPACE,
+								KeyEvent.VK_CONTROL,
 								KeyEvent.VK_ESCAPE
 							};
 	
